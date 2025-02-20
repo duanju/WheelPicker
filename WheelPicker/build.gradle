@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 28
+    compileSdk 35
+    namespace "dev.aige.wheelpicker"
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 35
         versionCode 8
         versionName version
     }

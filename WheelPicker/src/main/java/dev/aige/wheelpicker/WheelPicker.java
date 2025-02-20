@@ -250,6 +250,12 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
     private boolean hasCurtain;
 
     /**
+     *
+     * @see #setCurtainCornerRadius(int)
+     */
+    private int curtainCornerRadius;
+
+    /**
      * 是否显示空气感效果
      *
      * @see #setAtmospheric(boolean)
@@ -317,6 +323,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
         mIndicatorSize = a.getDimensionPixelSize(R.styleable.WheelPicker_wheel_indicator_size,
                 getResources().getDimensionPixelSize(R.dimen.WheelIndicatorSize));
         hasCurtain = a.getBoolean(R.styleable.WheelPicker_wheel_curtain, false);
+        curtainCornerRadius = a.getDimensionPixelSize(R.styleable.WheelPicker_curtain_corner_radius, 0);
         mCurtainColor = a.getColor(R.styleable.WheelPicker_wheel_curtain_color, 0x88FFFFFF);
         hasAtmospheric = a.getBoolean(R.styleable.WheelPicker_wheel_atmospheric, false);
         isCurved = a.getBoolean(R.styleable.WheelPicker_wheel_curved, false);
@@ -542,6 +549,22 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
             mOnWheelChangeListener.onWheelScrolled(mScrollOffsetY);
         if(mData.size() == 0)
             return;
+
+        // 是否需要绘制幕布
+        // Need to draw curtain or not
+        if (hasCurtain) {
+            mPaint.setColor(mCurtainColor);
+            mPaint.setStyle(Paint.Style.FILL);
+            canvas.drawRoundRect(mRectCurrentItem.left
+                    , mRectCurrentItem.top
+                    , mRectCurrentItem.right
+                    , mRectCurrentItem.bottom
+                    , curtainCornerRadius
+                    , curtainCornerRadius
+                    , mPaint);
+            canvas.save();
+        }
+
         int drawnDataStartPos = -mScrollOffsetY / mItemHeight - mHalfDrawnItemCount;
         for (int drawnDataPos = drawnDataStartPos + mSelectedItemPosition,
              drawnOffsetPos = -mHalfDrawnItemCount;
@@ -654,13 +677,7 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
                 canvas.restore();
             }
         }
-        // 是否需要绘制幕布
-        // Need to draw curtain or not
-        if (hasCurtain) {
-            mPaint.setColor(mCurtainColor);
-            mPaint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(mRectCurrentItem, mPaint);
-        }
+
         // 是否需要绘制指示器
         // Need to draw indicator or not
         if (hasIndicator) {
@@ -1045,6 +1062,13 @@ public class WheelPicker extends View implements IDebug, IWheelPicker, Runnable 
     @Override
     public void setCurtain(boolean hasCurtain) {
         this.hasCurtain = hasCurtain;
+        computeCurrentItemRect();
+        invalidate();
+    }
+
+    @Override
+    public void setCurtainCornerRadius(int radius) {
+        this.curtainCornerRadius = radius;
         computeCurrentItemRect();
         invalidate();
     }

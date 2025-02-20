@@ -406,6 +406,15 @@ public interface IWheelPicker {
     void setCurtain(boolean hasCurtain);
 
     /**
+     *  设置滚轮选择器幕布的圆角
+     * <p>
+     * Set radius corner of curtain
+     * Unit in px
+     * @param radius 圆角的大小，单位：px
+     */
+    void setCurtainCornerRadius(int radius);
+
+    /**
      * 滚轮选择器是否显示幕布
      * <p>
      * Whether WheelPicker display curtain or not

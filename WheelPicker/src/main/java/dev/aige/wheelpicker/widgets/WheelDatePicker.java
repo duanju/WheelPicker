@@ -329,6 +329,13 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
     }
 
     @Override
+    public void setCurtainCornerRadius(int radius) {
+        mPickerYear.setCurtainCornerRadius(radius);
+        mPickerMonth.setCurtainCornerRadius(radius);
+        mPickerDay.setCurtainCornerRadius(radius);
+    }
+
+    @Override
     public boolean hasCurtain() {
         return mPickerYear.hasCurtain() && mPickerMonth.hasCurtain() &&
                 mPickerDay.hasCurtain();
